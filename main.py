@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import exc, cast, Date
+from pymysql import Time
+from sqlalchemy import exc, cast, Date, Time
 from sqlalchemy.ext.automap import automap_base 
 from sqlalchemy.orm import Session
 from datetime import date, datetime, timedelta, timezone
@@ -30,7 +31,7 @@ dictConfig(
         'custom_handler': {
             'class' : 'logging.FileHandler',
             'formatter': 'default',
-            'filename' : 'warnings.log',
+            'filename' : 'scanaudit.log',
             'level': 'WARN',
         }
     },
@@ -51,8 +52,8 @@ user_name = os.getenv("USER_NAME")
 server = os.getenv("SERVER_NAME")
 db_name = os.getenv("DB_NAME")
 password = os.getenv("DB_PASS")
-# app.config["SQLALCHEMY_DATABASE_URI"] = f"mssql+pyodbc://{user_name}:{password}@{server}/{db_name}?driver={driver}"
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mssql+pyodbc://{server}/{db_name}?driver={driver}"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mssql+pyodbc://{user_name}:{password}@{server}/{db_name}?driver={driver}"
+# app.config["SQLALCHEMY_DATABASE_URI"] = f"mssql+pyodbc://{server}/{db_name}?driver={driver}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -120,17 +121,15 @@ def generate_master_list_scan_codes(file_list):
 
 # Cross-reference scan codes 
 def get_unscanned_codes(master_scan_codes): 
-    last_hour = datetime.today() - timedelta(hours=1)
-    last_hour = last_hour.replace(minute=0, second=0, microsecond=0)
+    last_hour = datetime.today() - timedelta(hours=2)
     scan_codes = master_scan_codes.keys()
     db_scan_codes = session.query(OrderScans.SCANcode)
     db_scan_codes = db_scan_codes.filter(
         OrderScans.SCANlocation == 'R', 
-        OrderScans.aTimeStamp.cast(Date) >= last_hour
-    )
-    db_scan_codes = [r._asdict() for r in db_scan_codes.all()]
+        OrderScans.aTimeStamp >= last_hour
+    ).all()
+    db_scan_codes = [r._asdict() for r in db_scan_codes]
     order_scans = [d['SCANcode'] for d in db_scan_codes]
-    
     unscanned_codes = list(set(scan_codes) - set(order_scans))
    
     return unscanned_codes
