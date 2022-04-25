@@ -28,3 +28,85 @@
 2022-04-23 18:27:48.476042: wfastcgi.py 3.0.0 initialized
 2022-04-23 22:27:48.538291: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
 2022-04-23 22:27:48.538291: wfastcgi.py 3.0.0 initialized
+2022-04-24 02:27:48.303736: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-24 02:27:48.303736: wfastcgi.py 3.0.0 initialized
+[2022-04-24 02:27:48,850] ERROR in app: Exception on /report [GET]
+Traceback (most recent call last):
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File ".\main.py", line 262, in report_rte
+    return generate_audit_report(master_scan_list, order_package_items, unscanned_codes)
+  File ".\main.py", line 223, in generate_audit_report
+    mail.send(msg)
+  File "c:\program files\python39\lib\site-packages\flask_mail.py", line 491, in send
+    with self.connect() as connection:
+  File "c:\program files\python39\lib\site-packages\flask_mail.py", line 144, in __enter__
+    self.host = self.configure_host()
+  File "c:\program files\python39\lib\site-packages\flask_mail.py", line 165, in configure_host
+    host.login(self.mail.username, self.mail.password)
+  File "c:\program files\python39\lib\smtplib.py", line 734, in login
+    raise last_exception
+  File "c:\program files\python39\lib\smtplib.py", line 723, in login
+    (code, resp) = self.auth(
+  File "c:\program files\python39\lib\smtplib.py", line 646, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (534, b'5.7.9 Please log in with your web browser and then try again. Learn more at\n5.7.9  https://support.google.com/mail/?p=WebLoginRequired a1-20020a923301000000b002cae7560bfesm4131773ilf.62 - gsmtp')
+2022-04-24 06:27:48.902970: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-24 06:27:48.902970: wfastcgi.py 3.0.0 initialized
+[2022-04-24 06:27:49,528] ERROR in app: Exception on /report [GET]
+Traceback (most recent call last):
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\program files\python39\lib\site-packages\flask\app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File ".\main.py", line 262, in report_rte
+    return generate_audit_report(master_scan_list, order_package_items, unscanned_codes)
+  File ".\main.py", line 223, in generate_audit_report
+    mail.send(msg)
+  File "c:\program files\python39\lib\site-packages\flask_mail.py", line 491, in send
+    with self.connect() as connection:
+  File "c:\program files\python39\lib\site-packages\flask_mail.py", line 144, in __enter__
+    self.host = self.configure_host()
+  File "c:\program files\python39\lib\site-packages\flask_mail.py", line 165, in configure_host
+    host.login(self.mail.username, self.mail.password)
+  File "c:\program files\python39\lib\smtplib.py", line 734, in login
+    raise last_exception
+  File "c:\program files\python39\lib\smtplib.py", line 723, in login
+    (code, resp) = self.auth(
+  File "c:\program files\python39\lib\smtplib.py", line 646, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (534, b'5.7.9 Please log in with your web browser and then try again. Learn more at\n5.7.9  https://support.google.com/mail/?p=WebLoginRequired j12-20020a6b310c000000b0065744ce0180sm5252813ioa.8 - gsmtp')
+2022-04-24 10:27:50.002108: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-24 10:27:50.002108: wfastcgi.py 3.0.0 initialized
+2022-04-24 14:27:48.402908: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-24 14:27:48.402908: wfastcgi.py 3.0.0 initialized
+2022-04-24 18:27:48.335746: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-24 18:27:48.335746: wfastcgi.py 3.0.0 initialized
+2022-04-24 22:27:48.348132: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-24 22:27:48.348132: wfastcgi.py 3.0.0 initialized
+2022-04-25 02:27:49.884415: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-25 02:27:49.884415: wfastcgi.py 3.0.0 initialized
+2022-04-25 06:27:54.033899: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-25 06:27:54.033899: wfastcgi.py 3.0.0 initialized
+2022-04-25 10:27:50.511588: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-25 10:27:50.511588: wfastcgi.py 3.0.0 initialized
+2022-04-25 14:27:48.817946: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-25 14:27:48.817946: wfastcgi.py 3.0.0 initialized
+2022-04-25 18:27:53.011663: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-25 18:27:53.011663: wfastcgi.py 3.0.0 initialized
+2022-04-25 18:30:08.086340: wfastcgi.py exiting because main.py has changed, matching .*((\.py)|(\.config))$
+2022-04-25 18:30:08.086340: Running on_exit tasks
+2022-04-25 18:39:17.865412: wfastcgi.py will restart when files in C:\CDL\CDL_ScanAudit\ are changed: .*((\.py)|(\.config))$
+2022-04-25 18:39:17.867409: wfastcgi.py 3.0.0 initialized
+2022-04-25 18:41:47.106653: wfastcgi.py exiting because main.py has changed, matching .*((\.py)|(\.config))$
+2022-04-25 18:41:47.106653: Running on_exit tasks
