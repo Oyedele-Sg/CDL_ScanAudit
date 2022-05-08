@@ -16,8 +16,7 @@ import logging, logging.handlers
 import xlsxwriter
 import os
 import csv
-import schedule
-import time
+
 
 
 os.environ["WERKZEUG_RUN_MAIN"] = "true"
@@ -34,7 +33,7 @@ def setup_log(name):
     smtp_handler = logging.handlers.SMTPHandler(mailhost=('smtp.gmail.com', 587),
                                                 fromaddr=str(os.getenv('EMAIL')),
                                                 toaddrs=[str(os.getenv('SUPPORT'))],
-                                                subject='Error In App',
+                                                subject='Error In CDL ScanAudit',
                                                 credentials=(str(os.getenv('EMAIL')), str(os.getenv('MAIL_PASS'))),
                                                 secure=())
     log_handler.setLevel(logging.DEBUG)
@@ -230,13 +229,14 @@ def generate_audit_report(master_scan_list, order_package_items, unscanned_codes
     )
 
 def get_scan_report():
-    last_audit = check_last_audit()    
-    file_list = generate_scan_file_list(last_audit)
-    master_scan_list = generate_master_list_scan_codes(file_list)
-    unscanned_codes = get_unscanned_codes(master_scan_list)
-    order_package_items = get_order_tracking_ids()
-    
-    return generate_audit_report(master_scan_list, order_package_items, unscanned_codes)
+    with app.test_request_context(): 
+        last_audit = check_last_audit()    
+        file_list = generate_scan_file_list(last_audit)
+        master_scan_list = generate_master_list_scan_codes(file_list)
+        unscanned_codes = get_unscanned_codes(master_scan_list)
+        order_package_items = get_order_tracking_ids()
+        
+        return generate_audit_report(master_scan_list, order_package_items, unscanned_codes)
 
 @app.route('/')
 def home_rte():
@@ -263,14 +263,11 @@ def internal_error(exception):
 
 
 sched = BackgroundScheduler(daemon=True)
-trigger = CronTrigger(
-        year="*", month="*", day="*", hour="12", minute="0", second="0"
-    )
-sched.add_job(get_scan_report,trigger)
+sched.add_job(get_scan_report,'interval', hours=4)
 sched.start()
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="localhost", port=8083)
 
 
 
