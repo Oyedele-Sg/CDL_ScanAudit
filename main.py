@@ -124,11 +124,10 @@ def check_last_audit():
 
 # Return list of files with scancodes to be scanned
 def generate_scan_file_list(last_audit):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    dir_path = os.path.join(dir_path, "packagesreceived")
+    dir_path = os.getenv('FILE_DIR')
     file_list = []
     for file in os.listdir(dir_path):
-        if file.startswith("PackagesReceived") and file.endswith(".csv"):
+        if 'PackagesReceived' in file and file.endswith(".csv"):
             scan_file = os.path.join(dir_path, file)
             lmt = os.path.getmtime(scan_file)
             modified = datetime.fromtimestamp(lmt)
@@ -212,7 +211,8 @@ def generate_audit_report(master_scan_list, order_package_items, unscanned_codes
 
     subject = 'Scan Audit - ' + today
     msg = Message(
-                    subject,
+                    sender=('btech@cdldelivers.com', str(os.getenv('EMAIL'))),
+                    subject=subject,
                     recipients = recipients
                 )
     msg.body = 'Find attached the scan audit report in the email'
