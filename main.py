@@ -180,14 +180,6 @@ def get_order_tracking_ids():
         unscanned_orders[k] = v
     return unscanned_orders
 
-def write_timestamp():
-    # Write current timestamp to lastaudit
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file_path = os.path.join(dir_path, "lastaudit.txt")
-    with open(file_path, 'w') as f:
-        f.write(str(datetime.now()))
-        f.write('\n')
-
 # Generate audit report file
 def generate_audit_report(master_scan_list, order_package_items, unscanned_codes):
     today = datetime.now()
@@ -210,6 +202,16 @@ def generate_audit_report(master_scan_list, order_package_items, unscanned_codes
 
     workbook.close()
 
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_path = os.path.join(dir_path, "lastaudit.txt")
+    append_write = 'w' 
+    if os.path.exists(file_path):
+        append_write = 'a' # append if already exists
+        
+    with open(file_path, append_write) as f:
+        f.write(str(datetime.now()))
+        f.write('\n')
+
     subject = 'Scan Audit - ' + today
     msg = Message(
                     sender=('btech@cdldelivers.com', str(os.getenv('EMAIL'))),
@@ -218,8 +220,6 @@ def generate_audit_report(master_scan_list, order_package_items, unscanned_codes
                 )
     msg.body = 'Find attached the scan audit report in the email'
     file = open(file_name, 'rb')
-
-    
     msg.attach(file_name, '	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', file.read())
     mail.send(msg)
     return send_file(
@@ -229,22 +229,15 @@ def generate_audit_report(master_scan_list, order_package_items, unscanned_codes
     )
 
 def get_scan_report():
-    with app.test_request_context(): 
+    with app.test_request_context():  
         last_audit = check_last_audit()    
-        print("LAST AUDIT: ", last_audit)
         file_list = generate_scan_file_list(last_audit)
-        print(len(file_list))
         master_scan_list = generate_master_list_scan_codes(file_list)
         unscanned_codes = get_unscanned_codes(master_scan_list)
         order_package_items = get_order_tracking_ids()
-        write_timestamp()
         generate_audit_report(master_scan_list, order_package_items, unscanned_codes)
 
-    return 'Reported generated successfully'
-    
-    # return generate_audit_report(master_scan_list, order_package_items, unscanned_codes)
-        
-
+        return 'Reported generated successfully'
 
 @app.route('/')
 def home_rte():
@@ -272,7 +265,6 @@ def internal_error(exception):
 
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(get_scan_report,'interval', hours=4)
-sched.add_job(write_timestamp,'interval', hours=4)
 sched.start()
 
 if __name__ == "__main__":
